@@ -1,31 +1,30 @@
+import java.util.Random;
 import java.util.Scanner;
 public class practice{
     public static void main(String[] args){
         Scanner input = new Scanner(System.in);
+        Random random = new Random();
+
+        int guess;
+        int attempts = 0;
+        int randomNumber = random.nextInt(1, 11);
 
 
-        int number1,number2;
-        int pluses,minuses,multi,divs;
-
-        System.out.print("number1 = ? ");
-        number1 = input.nextInt();
-
-        System.out.print("number2 = ? ");
-        number2 = input.nextInt();
-
-        pluses = number1 + number2;
-        minuses = number1 - number2;
-        multi = number1 * number2;
-        divs = number1/number2;
-
-        System.out.println(pluses);
-        System.out.println(minuses);
-        System.out.println(multi);
-        System.out.println(divs);
+        System.out.println("Number Guessing Game");
+        System.out.println("Guess a number between 1-10: ");
 
 
+        do{
 
-        input.close();
+            System.out.println("ener a guess");
+            guess = input.nextInt();
+            attempts ++;
+
+        }while(guess != randomNumber);
+
+
+        System.out.print("you have won!!");
+        System.out.print("congrats");
 
     }
 }
