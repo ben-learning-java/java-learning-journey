@@ -1,0 +1,15 @@
+# Large files
+*.zip
+openjdk-*
+
+# Compiled Java files
+*.class
+
+# IDE files
+.idea/
+*.iml
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
