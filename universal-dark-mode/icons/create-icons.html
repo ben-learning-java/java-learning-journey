@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Create Icons</title>
+</head>
+<body>
+  <h2>Icon Generator</h2>
+  <p>Open this file in a browser and the icons will be automatically downloaded.</p>
+
+  <canvas id="canvas16" width="16" height="16" style="border:1px solid #000; margin:10px;"></canvas>
+  <canvas id="canvas48" width="48" height="48" style="border:1px solid #000; margin:10px;"></canvas>
+  <canvas id="canvas128" width="128" height="128" style="border:1px solid #000; margin:10px;"></canvas>
+
+  <script>
+    function createIcon(canvasId, size) {
+      const canvas = document.getElementById(canvasId);
+      const ctx = canvas.getContext('2d');
+
+      // Purple gradient background
+      const gradient = ctx.createLinearGradient(0, 0, size, size);
+      gradient.addColorStop(0, '#667eea');
+      gradient.addColorStop(1, '#764ba2');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, size, size);
+
+      // Draw moon
+      ctx.fillStyle = '#ffffff';
+      const moonSize = size * 0.5;
+      const moonX = size * 0.5;
+      const moonY = size * 0.5;
+
+      ctx.beginPath();
+      ctx.arc(moonX, moonY, moonSize, 0, 2 * Math.PI);
+      ctx.fill();
+
+      // Draw crescent (shadow)
+      ctx.fillStyle = '#667eea';
+      ctx.beginPath();
+      ctx.arc(moonX + moonSize * 0.3, moonY - moonSize * 0.1, moonSize * 0.9, 0, 2 * Math.PI);
+      ctx.fill();
+
+      return canvas;
+    }
+
+    // Create all icons
+    const canvas16 = createIcon('canvas16', 16);
+    const canvas48 = createIcon('canvas48', 48);
+    const canvas128 = createIcon('canvas128', 128);
+
+    // Download function
+    function downloadIcon(canvas, filename) {
+      canvas.toBlob(function(blob) {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        a.click();
+        URL.revokeObjectURL(url);
+      });
+    }
+
+    // Auto download after a short delay
+    setTimeout(() => {
+      downloadIcon(canvas16, 'icon16.png');
+      setTimeout(() => downloadIcon(canvas48, 'icon48.png'), 200);
+      setTimeout(() => downloadIcon(canvas128, 'icon128.png'), 400);
+    }, 500);
+  </script>
+</body>
+</html>
