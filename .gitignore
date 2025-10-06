@@ -2,6 +2,7 @@
 .DS_Store
 .AppleDouble
 .LSOverride
+Thumbs.db
 
 # Thumbnails
 ._*
@@ -22,6 +23,18 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
+# Large files
+*.zip
+openjdk-*
+
+# Compiled Java files
+*.class
+
+# IDE
+.vscode/
+.idea/
+*.iml
+
 # Node modules (if any project uses npm)
 node_modules/
 npm-debug.log*
@@ -29,10 +42,6 @@ npm-debug.log*
 # Environment variables
 .env
 .env.local
-
-# IDE
-.vscode/
-.idea/
 
 # Backup files
 *~

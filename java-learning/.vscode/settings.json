@@ -1,0 +1,23 @@
+{
+    "java.configuration.detectJdksAtStart": true,
+    "java.import.gradle.enabled": false,
+    "java.import.maven.enabled": false,
+    "java.autobuild.enabled": true,
+    "java.compile.nullAnalysis.mode": "automatic",
+    "java.format.enabled": true,
+    "java.format.onType.enabled": true,
+    "java.completion.enabled": true,
+    "java.signatureHelp.enabled": true,
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": "explicit"
+    },
+    "files.exclude": {
+        "**/*.class": true
+    },
+    "java.debug.settings.enableRunDebugCodeLens": true,
+    "java.debug.settings.showHex": false,
+    "java.debug.settings.showStaticVariables": false,
+    "java.debug.settings.showQualifiedNames": false,
+    "terminal.integrated.shell.windows": "cmd.exe"
+}
