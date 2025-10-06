@@ -3,6 +3,7 @@
 let currentTabId = null;
 let currentWebsite = null;
 let startTime = null;
+let isSaving = false; // Prevent concurrent saves
 
 // Initialize storage on install
 chrome.runtime.onInstalled.addListener(async () => {
@@ -16,8 +17,8 @@ chrome.runtime.onInstalled.addListener(async () => {
     await chrome.storage.local.set({ totalTime: 0 });
   }
 
-  // Create an alarm to save data every minute
-  chrome.alarms.create('saveTimeAlarm', { periodInMinutes: 1 });
+  // Create an alarm to save data every 2 minutes (reduced frequency)
+  chrome.alarms.create('saveTimeAlarm', { periodInMinutes: 2 });
 });
 
 // Listen for alarms
@@ -49,21 +50,30 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
 // Track when window focus changes
 chrome.windows.onFocusChanged.addListener(async (windowId) => {
   if (windowId === chrome.windows.WINDOW_ID_NONE) {
-    // Browser lost focus - save current session
+    // Browser lost focus - keep tracking (don't stop)
+    // Just save the current session but continue tracking
     await saveCurrentSession();
-    currentTabId = null;
-    currentWebsite = null;
-    startTime = null;
+    // Restart tracking with the same website
+    if (currentWebsite) {
+      startTime = Date.now();
+    }
   } else {
-    // Browser gained focus - start tracking active tab
+    // Browser gained focus - check if we need to switch to a different tab
     const [tab] = await chrome.tabs.query({ active: true, windowId: windowId });
-    if (tab) {
-      startTracking(tab);
+    if (tab && tab.url) {
+      const url = new URL(tab.url);
+      const hostname = url.hostname;
+
+      // Only restart tracking if we're on a different website
+      if (hostname !== currentWebsite) {
+        await saveCurrentSession();
+        startTracking(tab);
+      }
     }
   }
 });
 
-// Start tracking a tab
+// Start tracking a tab (optimized - less logging)
 function startTracking(tab) {
   if (!tab || !tab.url) return;
 
@@ -78,52 +88,54 @@ function startTracking(tab) {
     currentTabId = tab.id;
     currentWebsite = url.hostname;
     startTime = Date.now();
-
-    console.log('Started tracking:', currentWebsite);
   } catch (error) {
-    console.error('Error parsing URL:', error);
+    // Silent fail - reduce console usage
   }
 }
 
-// Save current session time
+// Save current session time (optimized to prevent concurrent saves)
 async function saveCurrentSession() {
-  if (!currentWebsite || !startTime) return;
+  if (!currentWebsite || !startTime || isSaving) return;
 
   const endTime = Date.now();
   const timeSpent = Math.floor((endTime - startTime) / 1000); // in seconds
 
   if (timeSpent < 1) return; // Ignore very short visits
 
-  console.log(`Saving ${timeSpent} seconds for ${currentWebsite}`);
+  isSaving = true; // Lock to prevent concurrent saves
 
-  // Get current stats
-  const result = await chrome.storage.local.get(['websiteStats', 'totalTime']);
-  const websiteStats = result.websiteStats || {};
-  const totalTime = result.totalTime || 0;
+  try {
+    // Get current stats
+    const result = await chrome.storage.local.get(['websiteStats', 'totalTime']);
+    const websiteStats = result.websiteStats || {};
+    const totalTime = result.totalTime || 0;
 
-  // Update website stats
-  if (!websiteStats[currentWebsite]) {
-    websiteStats[currentWebsite] = {
-      totalTime: 0,
-      visits: 0,
-      lastVisit: Date.now()
-    };
+    // Update website stats
+    if (!websiteStats[currentWebsite]) {
+      websiteStats[currentWebsite] = {
+        totalTime: 0,
+        visits: 0,
+        lastVisit: Date.now()
+      };
+    }
+
+    websiteStats[currentWebsite].totalTime += timeSpent;
+    websiteStats[currentWebsite].visits += 1;
+    websiteStats[currentWebsite].lastVisit = Date.now();
+
+    // Update total time
+    const newTotalTime = totalTime + timeSpent;
+
+    // Save to storage
+    await chrome.storage.local.set({
+      websiteStats: websiteStats,
+      totalTime: newTotalTime
+    });
+  } catch (error) {
+    console.error('Error saving session:', error);
+  } finally {
+    isSaving = false; // Unlock
   }
-
-  websiteStats[currentWebsite].totalTime += timeSpent;
-  websiteStats[currentWebsite].visits += 1;
-  websiteStats[currentWebsite].lastVisit = Date.now();
-
-  // Update total time
-  const newTotalTime = totalTime + timeSpent;
-
-  // Save to storage
-  await chrome.storage.local.set({
-    websiteStats: websiteStats,
-    totalTime: newTotalTime
-  });
-
-  console.log('Session saved successfully');
 }
 
 // Handle extension icon click

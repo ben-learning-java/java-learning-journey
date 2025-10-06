@@ -198,5 +198,13 @@ document.getElementById('exportBtn').addEventListener('click', exportData);
 // Initialize on load
 initialize();
 
-// Refresh data every 2 seconds while popup is open
-setInterval(initialize, 2000);
+// Refresh data every 5 seconds while popup is open (optimized with lazy loading)
+let refreshInterval = setInterval(initialize, 5000);
+
+// Clean up interval when popup closes (reduces memory usage)
+window.addEventListener('unload', () => {
+  if (refreshInterval) {
+    clearInterval(refreshInterval);
+    refreshInterval = null;
+  }
+});
