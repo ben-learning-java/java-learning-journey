@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Page for Cursor Zoom Extension</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 40px;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #1d428a 0%, #c8102e 100%);
+            min-height: 200vh;
+            color: white;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 20px;
+            color: #333;
+        }
+        h1 {
+            color: #17408b;
+            text-align: center;
+        }
+        .instructions {
+            background: #f5f7fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 5px solid #17408b;
+        }
+        .test-area {
+            height: 300px;
+            background: linear-gradient(135deg, #17408b 0%, #c8102e 100%);
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            border-radius: 10px;
+        }
+        .section {
+            margin: 40px 0;
+            padding: 20px;
+            background: #fff;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 Cursor Zoom Extension Test Page</h1>
+
+        <div class="instructions">
+            <h2>How to Test:</h2>
+            <ol>
+                <li>Move your cursor anywhere on this page</li>
+                <li>Press <strong>Ctrl+Shift+Z</strong> (Mac: ⌘+Shift+Z)</li>
+                <li>The page should scroll to center your cursor with a red circle indicator</li>
+            </ol>
+
+            <h3>How to Check for Errors:</h3>
+            <ol>
+                <li>Press <strong>F12</strong> to open Developer Tools</li>
+                <li>Click the <strong>Console</strong> tab</li>
+                <li>Try the shortcut again and watch for messages</li>
+                <li>Also check <code>chrome://extensions/</code> → click "service worker" link</li>
+            </ol>
+        </div>
+
+        <div class="test-area">
+            Move your cursor here and press the shortcut!
+        </div>
+
+        <div class="section">
+            <h2>Section 1</h2>
+            <p>This is a test section. Scroll down and try the shortcut from different positions.</p>
+        </div>
+
+        <div class="section">
+            <h2>Section 2</h2>
+            <p>Move your cursor here and test the zoom function.</p>
+        </div>
+
+        <div class="section">
+            <h2>Section 3</h2>
+            <p>The page is intentionally tall so you can test scrolling to different positions.</p>
+        </div>
+
+        <div class="section">
+            <h2>Section 4</h2>
+            <p>Keep testing from different scroll positions!</p>
+        </div>
+
+        <div class="section">
+            <h2>Section 5</h2>
+            <p>Bottom section - try the shortcut here too!</p>
+        </div>
+    </div>
+</body>
+</html>

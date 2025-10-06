@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="inventory-container" class="hidden">
+        <div class="inventory-wrapper">
+            <!-- Header -->
+            <div class="inventory-header">
+                <div class="header-left">
+                    <h1>INVENTORY</h1>
+                    <div class="inventory-stats">
+                        <span id="slots-info">0/30 Slots</span>
+                        <span id="weight-info">0.0/100.0 KG</span>
+                    </div>
+                </div>
+                <button class="close-btn" onclick="closeInventory()">✕</button>
+            </div>
+
+            <!-- Content -->
+            <div class="inventory-content">
+                <!-- Items Grid -->
+                <div class="items-section">
+                    <div id="items-grid" class="items-grid">
+                        <!-- Items will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Item Details Panel -->
+                <div id="item-details" class="item-details hidden">
+                    <div class="details-header">
+                        <div class="item-icon-large" id="detail-icon">📦</div>
+                        <div class="item-title">
+                            <h2 id="detail-name">Item Name</h2>
+                            <p id="detail-count">x0</p>
+                        </div>
+                    </div>
+
+                    <div class="details-body">
+                        <div class="detail-row">
+                            <span class="label">Weight:</span>
+                            <span id="detail-weight">0.0 KG</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="label">Description:</span>
+                        </div>
+                        <p id="detail-description" class="description-text">No description available</p>
+                    </div>
+
+                    <div class="details-actions">
+                        <button class="use-btn" onclick="useItem()">
+                            <span>Use</span>
+                        </button>
+                        <button class="drop-btn" onclick="showDropPrompt()">
+                            <span>Drop</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Drop Amount Modal -->
+    <div id="drop-modal" class="modal hidden">
+        <div class="modal-content">
+            <h3>Drop Item</h3>
+            <p id="drop-item-name"></p>
+            <div class="input-group">
+                <label for="drop-amount">Amount:</label>
+                <input type="number" id="drop-amount" min="1" value="1">
+            </div>
+            <div class="modal-actions">
+                <button class="confirm-btn" onclick="confirmDrop()">Confirm</button>
+                <button class="cancel-btn" onclick="cancelDrop()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="nui://game/ui/jquery.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

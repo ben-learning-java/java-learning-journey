@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>24/7 Shop</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Shop Container -->
+    <div id="shop-container" class="hidden">
+        <div class="shop-wrapper">
+            <!-- Header -->
+            <div class="shop-header">
+                <h1>24/7 SUPERMARKET</h1>
+                <button class="close-btn" onclick="closeShop()">✕</button>
+            </div>
+
+            <!-- Categories -->
+            <div class="categories">
+                <button class="category-btn active" onclick="filterCategory('all')">All Items</button>
+                <button class="category-btn" onclick="filterCategory('food')">Food</button>
+                <button class="category-btn" onclick="filterCategory('drinks')">Drinks</button>
+            </div>
+
+            <!-- Items Grid -->
+            <div class="items-container">
+                <div id="items-grid" class="items-grid">
+                    <!-- Items will be populated here by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Cart -->
+            <div class="cart-section">
+                <div class="cart-header">
+                    <h2>Shopping Cart</h2>
+                    <button class="clear-cart-btn" onclick="clearCart()">Clear Cart</button>
+                </div>
+                <div id="cart-items" class="cart-items">
+                    <p class="empty-cart">Your cart is empty</p>
+                </div>
+                <div class="cart-footer">
+                    <div class="total">
+                        <span>Total:</span>
+                        <span id="cart-total">$0</span>
+                    </div>
+                    <button class="checkout-btn" onclick="checkout()">Purchase</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Inventory Container -->
+    <div id="inventory-container" class="hidden">
+        <div class="inventory-wrapper">
+            <!-- Header -->
+            <div class="inventory-header">
+                <h1>INVENTORY</h1>
+                <button class="close-btn" onclick="closeInventory()">✕</button>
+            </div>
+
+            <!-- Inventory Grid -->
+            <div class="inventory-content">
+                <div id="inventory-grid" class="inventory-grid">
+                    <p class="empty-inventory">Your inventory is empty</p>
+                </div>
+            </div>
+
+            <!-- Info Panel -->
+            <div id="item-info" class="item-info-panel hidden">
+                <h3 id="info-item-name"></h3>
+                <p id="info-item-description"></p>
+                <p id="info-item-count"></p>
+                <div class="item-actions">
+                    <button class="use-btn" onclick="useItem()">Use</button>
+                    <button class="drop-btn" onclick="dropItem()">Drop</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="nui://game/ui/jquery.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

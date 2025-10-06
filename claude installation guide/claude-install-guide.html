@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Install Claude Code</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0f0f0f;
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            padding: 60px 20px 40px;
+        }
+
+        h1 {
+            font-size: 3.5em;
+            font-weight: 800;
+            background: linear-gradient(135deg, #a78bfa 0%, #ec4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            color: #9ca3af;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin: 40px 0;
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            padding: 15px 40px;
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #9ca3af;
+            background: #1a1a1a;
+            border: 2px solid #2a2a2a;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tab:hover {
+            border-color: #a78bfa;
+            color: #fff;
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, #a78bfa 0%, #ec4899 100%);
+            border-color: transparent;
+            color: #fff;
+        }
+
+        .error-section {
+            background: #1a1a1a;
+            border-radius: 16px;
+            padding: 40px;
+            margin-top: 60px;
+            border: 1px solid #2a2a2a;
+        }
+
+        .error-title {
+            font-size: 2em;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .error-input {
+            width: 100%;
+            padding: 18px;
+            background: #0a0a0a;
+            border: 2px solid #2a2a2a;
+            border-radius: 12px;
+            color: #fff;
+            font-size: 1.1em;
+            font-family: 'Monaco', 'Courier New', monospace;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        .error-input:focus {
+            outline: none;
+            border-color: #a78bfa;
+        }
+
+        .error-input::placeholder {
+            color: #6b7280;
+        }
+
+        .solution {
+            background: #0a0a0a;
+            border-left: 4px solid #10b981;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .solution.show {
+            display: block;
+            animation: slideIn 0.4s ease-in;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .solution h4 {
+            color: #10b981;
+            font-size: 1.3em;
+            margin-bottom: 15px;
+        }
+
+        .solution p {
+            color: #d1d5db;
+            line-height: 1.7;
+            margin-bottom: 12px;
+        }
+
+        .no-match {
+            text-align: center;
+            color: #9ca3af;
+            padding: 30px;
+            display: none;
+        }
+
+        .no-match.show {
+            display: block;
+        }
+
+        .requirement-box {
+            background: #1a1a1a;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 20px;
+            border: 1px solid #2a2a2a;
+            transition: all 0.3s ease;
+        }
+
+        .requirement-box:hover {
+            border-color: #a78bfa;
+            transform: translateY(-2px);
+        }
+
+        .requirement-box h3 {
+            color: #fff;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .requirement-box p {
+            color: #d1d5db;
+            line-height: 1.7;
+            font-size: 1.05em;
+        }
+
+        .requirement-box ul {
+            list-style: none;
+            margin: 15px 0;
+        }
+
+        .requirement-box li {
+            color: #d1d5db;
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .requirement-box li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #10b981;
+            font-weight: bold;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #a78bfa 0%, #ec4899 100%);
+            padding: 25px;
+            border-radius: 12px;
+            margin-top: 20px;
+        }
+
+        .highlight-box h4 {
+            color: #fff;
+            font-size: 1.3em;
+            margin-bottom: 10px;
+        }
+
+        .highlight-box p {
+            color: #fff;
+            margin-bottom: 15px;
+        }
+
+        .content {
+            padding: 20px;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.4s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .step {
+            background: #1a1a1a;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 20px;
+            border: 1px solid #2a2a2a;
+            transition: all 0.3s ease;
+        }
+
+        .step:hover {
+            border-color: #a78bfa;
+            transform: translateY(-2px);
+        }
+
+        .step-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #a78bfa 0%, #ec4899 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2em;
+            flex-shrink: 0;
+        }
+
+        .step h3 {
+            color: #fff;
+            font-size: 1.4em;
+            font-weight: 700;
+        }
+
+        .step p {
+            color: #d1d5db;
+            line-height: 1.7;
+            margin-bottom: 12px;
+            font-size: 1.05em;
+        }
+
+        .command-block {
+            background: #0a0a0a;
+            color: #a78bfa;
+            padding: 18px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 1em;
+            border: 1px solid #2a2a2a;
+            overflow-x: auto;
+        }
+
+        .link-button {
+            display: inline-block;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #a78bfa 0%, #ec4899 100%);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            margin: 10px 0;
+            transition: all 0.3s ease;
+        }
+
+        .link-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(167, 139, 250, 0.4);
+        }
+
+        a {
+            color: #a78bfa;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        a:hover {
+            color: #ec4899;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Claude Code</h1>
+            <p class="subtitle">Get started in 3 simple steps</p>
+        </header>
+
+        <!-- Requirements Section -->
+        <div style="padding: 20px;">
+            <div class="requirement-box">
+                <h3>💳 Subscription Required</h3>
+                <p>Before you can use Claude Code, you need an active Anthropic subscription or API credits.</p>
+                <div class="highlight-box">
+                    <h4>⚠️ Important</h4>
+                    <p>Claude Code is NOT free. You must have one of the following:</p>
+                    <ul>
+                        <li>An active Claude Pro subscription ($20/month)</li>
+                        <li>API credits in your Anthropic account</li>
+                        <li>An organization/team plan</li>
+                    </ul>
+                    <a href="https://console.anthropic.com/" target="_blank" class="link-button">🔗 Get Started at Anthropic Console</a>
+                </div>
+            </div>
+
+            <div class="requirement-box">
+                <h3>💻 System Requirements</h3>
+                <ul>
+                    <li>macOS 10.15+ or Windows 10/11</li>
+                    <li>Node.js version 18 or higher</li>
+                    <li>At least 200MB of free disk space</li>
+                    <li>Terminal or Command Prompt access</li>
+                    <li>Active internet connection</li>
+                </ul>
+            </div>
+
+            <div class="requirement-box">
+                <h3>🔑 What You'll Need</h3>
+                <ul>
+                    <li>An Anthropic account</li>
+                    <li>Valid API key from the console</li>
+                    <li>Package manager (Homebrew for Mac, Chocolatey for Windows)</li>
+                    <li>Basic command line knowledge</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" data-tab="mac">🍎 macOS</button>
+            <button class="tab" data-tab="windows">🪟 Windows</button>
+            <button class="tab" data-tab="troubleshoot">🔧 Troubleshoot</button>
+        </div>
+
+        <div class="content">
+            <!-- macOS Tab -->
+            <div id="mac" class="tab-content active">
+                <div class="step">
+                    <div class="step-header">
+                        <span class="step-number">1</span>
+                        <h3>Install Homebrew</h3>
+                    </div>
+                    <p>Homebrew is a package manager for macOS. Open Terminal and run:</p>
+                    <div class="command-block">/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</div>
+                    <a href="https://brew.sh" target="_blank" class="link-button">🔗 Visit Homebrew.sh</a>
+                </div>
+
+                <div class="step">
+                    <div class="step-header">
+                        <span class="step-number">2</span>
+                        <h3>Install Node.js</h3>
+                    </div>
+                    <p>Use Homebrew to install Node.js:</p>
+                    <div class="command-block">brew install node</div>
+                </div>
+
+                <div class="step">
+                    <div class="step-header">
+                        <span class="step-number">3</span>
+                        <h3>Install Claude Code</h3>
+                    </div>
+                    <p>Install Claude Code globally:</p>
+                    <div class="command-block">npm install -g @anthropic-ai/claude-code</div>
+                    <p>Start Claude Code:</p>
+                    <div class="command-block">claude</div>
+                    <p>You'll need an API key from <a href="https://console.anthropic.com/" target="_blank">Anthropic Console</a></p>
+                </div>
+            </div>
+
+            <!-- Windows Tab -->
+            <div id="windows" class="tab-content">
+                <div class="step">
+                    <div class="step-header">
+                        <span class="step-number">1</span>
+                        <h3>Install Chocolatey</h3>
+                    </div>
+                    <p>Chocolatey is a package manager for Windows. Open PowerShell as Administrator and run:</p>
+                    <div class="command-block">Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))</div>
+                    <a href="https://chocolatey.org" target="_blank" class="link-button">🔗 Visit Chocolatey.org</a>
+                </div>
+
+                <div class="step">
+                    <div class="step-header">
+                        <span class="step-number">2</span>
+                        <h3>Install Node.js</h3>
+                    </div>
+                    <p>Use Chocolatey to install Node.js:</p>
+                    <div class="command-block">choco install nodejs</div>
+                </div>
+
+                <div class="step">
+                    <div class="step-header">
+                        <span class="step-number">3</span>
+                        <h3>Install Claude Code</h3>
+                    </div>
+                    <p>Install Claude Code globally:</p>
+                    <div class="command-block">npm install -g @anthropic-ai/claude-code</div>
+                    <p>Start Claude Code:</p>
+                    <div class="command-block">claude</div>
+                    <p>You'll need an API key from <a href="https://console.anthropic.com/" target="_blank">Anthropic Console</a></p>
+                </div>
+            </div>
+
+            <!-- Troubleshoot Tab -->
+            <div id="troubleshoot" class="tab-content">
+                <div class="error-section">
+                    <h2 class="error-title">🔍 Error Troubleshooter</h2>
+                    <input
+                        type="text"
+                        id="errorInput"
+                        class="error-input"
+                        placeholder="Paste your error message here..."
+                    >
+
+                    <div id="solutionContainer"></div>
+                    <div id="noMatch" class="no-match">No solution found. Try checking the <a href="https://github.com/anthropics/claude-code/issues" target="_blank">GitHub Issues</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const tabs = document.querySelectorAll('.tab');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs and contents
+                tabs.forEach(t => t.classList.remove('active'));
+                tabContents.forEach(content => content.classList.remove('active'));
+
+                // Add active class to clicked tab
+                tab.classList.add('active');
+
+                // Show corresponding content
+                const tabId = tab.getAttribute('data-tab');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+
+        // Error detection and solutions
+        const errorSolutions = [
+            {
+                keywords: ['command not found', 'brew', 'homebrew'],
+                title: '❌ Homebrew Command Not Found',
+                solution: `
+                    <p>Homebrew is not installed or not in your PATH.</p>
+                    <div class="command-block">/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</div>
+                    <p>After installation, follow the instructions to add Homebrew to your PATH.</p>
+                `
+            },
+            {
+                keywords: ['command not found', 'choco', 'chocolatey'],
+                title: '❌ Chocolatey Command Not Found',
+                solution: `
+                    <p>Chocolatey is not installed. Open PowerShell as Administrator and run:</p>
+                    <div class="command-block">Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))</div>
+                `
+            },
+            {
+                keywords: ['command not found', 'npm', 'node'],
+                title: '❌ Node.js or NPM Not Found',
+                solution: `
+                    <p><strong>macOS:</strong> Install Node.js using Homebrew:</p>
+                    <div class="command-block">brew install node</div>
+                    <p><strong>Windows:</strong> Install Node.js using Chocolatey:</p>
+                    <div class="command-block">choco install nodejs</div>
+                    <p>Or download directly from <a href="https://nodejs.org" target="_blank">nodejs.org</a></p>
+                `
+            },
+            {
+                keywords: ['command not found', 'claude'],
+                title: '❌ Claude Command Not Found',
+                solution: `
+                    <p>Claude Code is not installed. Install it globally:</p>
+                    <div class="command-block">npm install -g @anthropic-ai/claude-code</div>
+                    <p>If already installed, try restarting your terminal.</p>
+                `
+            },
+            {
+                keywords: ['permission denied', 'eacces', 'access'],
+                title: '❌ Permission Denied',
+                solution: `
+                    <p><strong>macOS/Linux:</strong> Use sudo (if safe) or fix npm permissions:</p>
+                    <div class="command-block">sudo npm install -g @anthropic-ai/claude-code</div>
+                    <p><strong>Windows:</strong> Run PowerShell or Command Prompt as Administrator.</p>
+                `
+            },
+            {
+                keywords: ['api key', 'authentication', 'unauthorized', 'invalid key'],
+                title: '❌ API Key Issues',
+                solution: `
+                    <p>Your API key is missing or invalid. Get a new one from:</p>
+                    <a href="https://console.anthropic.com/" target="_blank" class="link-button">🔗 Get API Key</a>
+                    <p>Then set it when prompted by Claude Code.</p>
+                `
+            },
+            {
+                keywords: ['network', 'timeout', 'connection', 'fetch failed'],
+                title: '❌ Network Connection Error',
+                solution: `
+                    <p>Check your internet connection. If behind a proxy, configure npm:</p>
+                    <div class="command-block">npm config set proxy http://proxy-server:port</div>
+                    <p>Or try again later if servers are down.</p>
+                `
+            },
+            {
+                keywords: ['version', 'node', 'unsupported'],
+                title: '❌ Node.js Version Too Old',
+                solution: `
+                    <p>Claude Code requires Node.js 18 or higher. Update Node.js:</p>
+                    <p><strong>macOS:</strong></p>
+                    <div class="command-block">brew upgrade node</div>
+                    <p><strong>Windows:</strong></p>
+                    <div class="command-block">choco upgrade nodejs</div>
+                `
+            }
+        ];
+
+        const errorInput = document.getElementById('errorInput');
+        const solutionContainer = document.getElementById('solutionContainer');
+        const noMatch = document.getElementById('noMatch');
+
+        errorInput.addEventListener('input', (e) => {
+            const inputText = e.target.value.toLowerCase();
+            solutionContainer.innerHTML = '';
+            noMatch.classList.remove('show');
+
+            if (inputText.length < 3) return;
+
+            let found = false;
+            errorSolutions.forEach(error => {
+                const matches = error.keywords.some(keyword =>
+                    inputText.includes(keyword.toLowerCase())
+                );
+
+                if (matches) {
+                    found = true;
+                    const solutionDiv = document.createElement('div');
+                    solutionDiv.className = 'solution show';
+                    solutionDiv.innerHTML = `
+                        <h4>${error.title}</h4>
+                        ${error.solution}
+                    `;
+                    solutionContainer.appendChild(solutionDiv);
+                }
+            });
+
+            if (!found && inputText.length > 3) {
+                noMatch.classList.add('show');
+            }
+        });
+    </script>
+</body>
+</html>

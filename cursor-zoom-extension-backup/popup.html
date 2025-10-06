@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cursor Zoom</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      width: 300px;
+      padding: 20px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: linear-gradient(135deg, #1d428a 0%, #c8102e 100%);
+      color: #333;
+    }
+
+    .container {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    h1 {
+      font-size: 24px;
+      color: #17408b;
+      margin-bottom: 8px;
+      text-align: center;
+      font-weight: 700;
+    }
+
+    .subtitle {
+      font-size: 13px;
+      color: #666;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    #zoomButton {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, #17408b 0%, #c8102e 100%);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(200, 16, 46, 0.4);
+      margin-bottom: 16px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    #zoomButton:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(200, 16, 46, 0.6);
+      background: linear-gradient(135deg, #1d428a 0%, #a00d26 100%);
+    }
+
+    #zoomButton:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 10px rgba(200, 16, 46, 0.4);
+    }
+
+    #status {
+      text-align: center;
+      font-size: 14px;
+      font-weight: 500;
+      min-height: 20px;
+      margin-bottom: 12px;
+      transition: all 0.3s ease;
+    }
+
+    .info-box {
+      background: #f5f7fa;
+      border-radius: 8px;
+      padding: 12px;
+      margin-top: 16px;
+      border-left: 4px solid #17408b;
+    }
+
+    .info-box h3 {
+      font-size: 13px;
+      color: #17408b;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    .info-box p {
+      font-size: 12px;
+      color: #666;
+      line-height: 1.5;
+    }
+
+    #position {
+      font-size: 12px;
+      color: #999;
+      text-align: center;
+      margin-top: 8px;
+      font-family: 'Courier New', monospace;
+    }
+
+    .icon {
+      text-align: center;
+      font-size: 48px;
+      margin-bottom: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="icon">🔍</div>
+    <h1>Cursor Zoom</h1>
+    <p class="subtitle">Magnifying bubble at your cursor</p>
+
+    <button id="zoomButton">🔍 Create Bubble</button>
+
+    <div id="status"></div>
+    <div id="position"></div>
+
+    <div class="info-box">
+      <h3>How to use:</h3>
+      <p>
+         • Move cursor to where you want to magnify<br>
+         • Press <strong>⌘+Z</strong> (Command+Z)<br>
+         • A bubble appears showing <strong>2x zoomed</strong> content!<br>
+         • Press again to remove bubble
+      </p>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
